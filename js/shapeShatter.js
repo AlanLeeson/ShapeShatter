@@ -12,6 +12,7 @@ app.shapeShatter = {
 	currentHeight : undefined,
 	canvas : undefined,
 	ctx :  undefined,
+	x : 0,
 	
 	init : function(){
 	
@@ -38,10 +39,16 @@ app.shapeShatter = {
 	gameLoop : function(){
 		requestAnimationFrame(this.gameLoop.bind(this));
     	this.render();
+    	this.update();
 	},
 	
 	render : function(){
-		
+		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
+		app.draw.circle(this.ctx,this.x,100,10,"#f00");
+    },
+    
+    update : function(){
+    	this.x += 0.2;
     },
     
     setInput : function(data){
