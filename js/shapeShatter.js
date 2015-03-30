@@ -53,11 +53,11 @@ app.shapeShatter = {
 	
 	render : function(){
 		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
-		
+		this.anchor1.render(this.ctx);
     },
     
     update : function(){
-    	this.anchor1.render(this.ctx);
+    	this.anchor1.update();
     },
     
     setInput : function(data){
