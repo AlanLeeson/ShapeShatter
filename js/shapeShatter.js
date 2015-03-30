@@ -14,6 +14,13 @@ app.shapeShatter = {
 	ctx :  undefined,
 	x : 0,
 	
+	scale : 1,
+	
+	offset : {top: 0, left: 0},
+	
+	anchor1 : undefined,
+	anchor2 : undefined,
+	
 	init : function(){
 	
 		this.RATIO = this.WIDTH / this.HEIGHT;
@@ -32,6 +39,8 @@ app.shapeShatter = {
 		this.android = this.ua.indexOf('android') > -1 ? true : false;
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
+		this.anchor1 = new app.Anchor(100,100,1);
+		
 		this.resize();
 		this.gameLoop();
 	},
@@ -44,11 +53,11 @@ app.shapeShatter = {
 	
 	render : function(){
 		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
-		app.draw.circle(this.ctx,this.x,100,10,"#f00");
+		
     },
     
     update : function(){
-    	this.x += 0.2;
+    	this.anchor1.render(this.ctx);
     },
     
     setInput : function(data){
@@ -85,6 +94,9 @@ app.shapeShatter = {
                 window.scrollTo(0,1);
         }, 10);
         
+        this.scale = this.currentWidth/this.WIDTH;
+        this.offset.top = this.canvas.offsetTop;
+        this.offset.left = this.canvas.offsetLeft;
     }
 
 };
