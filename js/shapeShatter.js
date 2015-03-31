@@ -62,6 +62,7 @@ app.shapeShatter = {
     },
     
     update : function(){
+    	this.rope.update();
     	this.anchor1.update();
     },
     
