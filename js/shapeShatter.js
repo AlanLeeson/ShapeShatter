@@ -14,8 +14,11 @@ app.shapeShatter = {
 	ctx :  undefined,
 	x : 0,
 	
-	scale : 1,
+	tapped : false,
+	xTap : undefined,
+	yTap : undefined,
 	
+	scale : 1,
 	offset : {top: 0, left: 0},
 	
 	anchor1 : undefined,
@@ -50,8 +53,8 @@ app.shapeShatter = {
 	
 	gameLoop : function(){
 		requestAnimationFrame(this.gameLoop.bind(this));
-    	this.render();
     	this.update();
+    	this.render();
 	},
 	
 	render : function(){
@@ -63,13 +66,15 @@ app.shapeShatter = {
     
     update : function(){
     	this.rope.update();
+    	if(this.tapped){
+			this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
+		}
     	this.anchor1.update();
     },
     
     setInput : function(data){
-    	//this.xTap = (data.pageX - this.offset.left)/this.scale;
-    	//this.yTap = (data.pageY - this.offset.top)/this.scale;
-    	//this.tapped = true;
+    	this.xTap = (data.pageX - this.offset.left)/this.scale;
+    	this.yTap = (data.pageY - this.offset.top)/this.scale;
     },
 
 	resize : function() {

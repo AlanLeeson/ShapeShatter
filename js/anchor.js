@@ -11,7 +11,7 @@ app.Anchor = function(){
 		this.velocity = vec2.create();
 		this.acceleration = vec2.create();
 		this.dragOffset = vec2.create();
-		this.mass = 120.0;
+		this.mass = 24.0;
 		this.gravity = vec2.fromValues(0,9.8);
 		this.dampening = 0.95;
 		this.ySpeed = Math.random() + 1;
@@ -30,6 +30,10 @@ app.Anchor = function(){
 								this.velocity[1]*this.dampening);
 		//add velocity to location
 		vec2.add(this.location,this.location,this.velocity);
+		
+		//Zero the acceleration
+		this.acceleration = vec2.create();
+		
 		//check the rest of the world.
 		this.checkWorld();
 	};
