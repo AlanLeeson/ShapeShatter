@@ -20,6 +20,7 @@ app.shapeShatter = {
 	
 	anchor1 : undefined,
 	anchor2 : undefined,
+	rope : undefined,
 	
 	init : function(){
 	
@@ -40,6 +41,8 @@ app.shapeShatter = {
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
 		this.anchor1 = new app.Anchor(100,100,1);
+		this.anchor2 = new app.Anchor(200,100,1);
+		this.rope = new app.Rope(this.anchor1,this.anchor2);
 		
 		this.resize();
 		this.gameLoop();
@@ -53,7 +56,9 @@ app.shapeShatter = {
 	
 	render : function(){
 		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
+		this.rope.render(this.ctx);
 		this.anchor1.render(this.ctx);
+		this.anchor2.render(this.ctx);
     },
     
     update : function(){
