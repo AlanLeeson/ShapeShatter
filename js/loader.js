@@ -11,13 +11,14 @@ window.onload = function() {
 	
 	window.addEventListener('mousedown',function(e){
 		e.preventDefault();
-		app.shapeShatter.setInput(e);
 		app.shapeShatter.tapped = true;
+		app.shapeShatter.held = true;
+		app.shapeShatter.setInput(e);
 	}, false);
 	
 	window.addEventListener('mouseup',function(e){
 		e.preventDefault();
-		app.shapeShatter.tapped = false;
+		app.shapeShatter.pauseScene();
 	}, false);
 	
 	window.addEventListener('mousemove',function(e){
@@ -27,8 +28,9 @@ window.onload = function() {
 	
 	window.addEventListener('touchstart',function(e){
 		e.preventDefault();
-		app.shapeShatter.setInput(e.touches[0]);
 		app.shapeShatter.tapped = true;
+		app.shapeShatter.held = true;
+		app.shapeShatter.setInput(e.touches[0]);
 	},false);
 	
 	window.addEventListener('touchmove',function(e){
@@ -38,6 +40,6 @@ window.onload = function() {
 	
 	window.addEventListener('touchend',function(e){
 		e.preventDefault();
-		app.shapeShatter.tapped = false;
+		app.shapeShatter.pauseScene();
 	},false);
 };

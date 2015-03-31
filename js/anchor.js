@@ -6,7 +6,8 @@ app.Anchor = function(){
 
 	var Anchor = function(x,y,col){
 		this.type = 'anchor';
-		this.r = 5.0;
+		this.clicked = false;
+		this.radius = 10.0;
 		this.location = vec2.fromValues(x,y);
 		this.velocity = vec2.create();
 		this.acceleration = vec2.create();
@@ -47,9 +48,8 @@ app.Anchor = function(){
 	
 	p.checkWorld = function(){
 		if(this.location[1] >= app.shapeShatter.HEIGHT){
-			this.location[1] = 0;
-			this.reset();
-			
+			//this.location[1] = 0;
+			//this.reset();	
 		}
 	};
 	
@@ -59,7 +59,13 @@ app.Anchor = function(){
 	};
 	
 	p.render = function(ctx){
-		app.draw.circle(ctx,this.location[0],this.location[1],10,"#f00");
+		var color = undefined;
+		if(!this.clicked){
+			color = "rgba(255,0,0,0.5)";
+		}else{
+			color = "#f00";
+		}
+		app.draw.circle(ctx,this.location[0],this.location[1],this.radius,color);
 	};
 	
 	return Anchor;

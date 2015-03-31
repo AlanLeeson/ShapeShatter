@@ -14,7 +14,9 @@ app.shapeShatter = {
 	ctx :  undefined,
 	x : 0,
 	
+	pause : true,
 	tapped : false,
+	held : false,
 	xTap : undefined,
 	yTap : undefined,
 	
@@ -53,7 +55,9 @@ app.shapeShatter = {
 	
 	gameLoop : function(){
 		requestAnimationFrame(this.gameLoop.bind(this));
-    	this.update();
+		if(!this.pause){
+    		this.update();
+    	}
     	this.render();
 	},
 	
@@ -66,15 +70,44 @@ app.shapeShatter = {
     
     update : function(){
     	this.rope.update();
-    	if(this.tapped){
+    	if(this.held){
+    		if(this.anchor1.clicked)
+			this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
+			else if(this.anchor2.clicked)
 			this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
 		}
     	this.anchor1.update();
+    	this.anchor2.update();
     },
     
+    //method only called when the user taps
+    //the if and else are used for when the tap is first administered
     setInput : function(data){
     	this.xTap = (data.pageX - this.offset.left)/this.scale;
     	this.yTap = (data.pageY - this.offset.top)/this.scale;
+    	if(this.tapped){
+    		this.checkAnchorCollision(this.anchor1);
+    		this.checkAnchorCollision(this.anchor2);
+    	}
+    	this.tapped = false;
+    },
+    
+    pauseScene : function(){
+    	this.pause = true;
+    	this.tapped = false;
+    	this.held = false;
+    	this.anchor1.clicked = false;
+    	this.anchor2.clicked = false;
+    },
+    
+    checkAnchorCollision : function(I){
+    	var dx = this.xTap - I.location[0];
+    	var dy = this.yTap - I.location[1];
+    	var collided = dx * dx + dy * dy <= I.radius * I.radius;
+    	if(collided){
+    		this.pause = false;
+    		I.clicked = true;
+    	}
     },
 
 	resize : function() {
