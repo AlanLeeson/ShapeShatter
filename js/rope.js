@@ -17,9 +17,9 @@ app.Rope = function(){
 	p.update = function(){
 		this.calcSpringForce();
 		if(this.anchor1.clicked == true)
-		this.constrainLength(50,100,this.anchor1,this.anchor2);
+		this.constrainLength(10,100,this.anchor1,this.anchor2);
 		else if(this.anchor2.clicked == true)
-		this.constrainLength(50,100,this.anchor2,this.anchor1);
+		this.constrainLength(10,100,this.anchor2,this.anchor1);
 	};
 	
 	p.render = function(ctx){

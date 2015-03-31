@@ -7,7 +7,7 @@ app.Anchor = function(){
 	var Anchor = function(x,y,col){
 		this.type = 'anchor';
 		this.clicked = false;
-		this.radius = 10.0;
+		this.radius = 12.0;
 		this.location = vec2.fromValues(x,y);
 		this.velocity = vec2.create();
 		this.acceleration = vec2.create();
@@ -47,9 +47,12 @@ app.Anchor = function(){
 	};
 	
 	p.checkWorld = function(){
-		if(this.location[1] >= app.shapeShatter.HEIGHT){
-			//this.location[1] = 0;
-			//this.reset();	
+		if(this.location[1] + this.radius >= app.shapeShatter.HEIGHT || this.location[1] - this.radius <= 0){
+			if(!this.clicked)
+			this.velocity[1] = -this.velocity[1];
+		}else if(this.location[0] + this.radius >= app.shapeShatter.WIDTH || this.location[0] - this.radius <= 0){
+			if(!this.clicked)
+			this.velocity[0] = -this.velocity[0];
 		}
 	};
 	
