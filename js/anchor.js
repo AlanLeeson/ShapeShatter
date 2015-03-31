@@ -63,7 +63,7 @@ app.Anchor = function(){
 	
 	p.render = function(ctx){
 		var color = undefined;
-		if(!this.clicked){
+		if(this.clicked){
 			color = "rgba(255,0,0,0.5)";
 		}else{
 			color = "#f00";

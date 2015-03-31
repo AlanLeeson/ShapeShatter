@@ -81,7 +81,7 @@ app.shapeShatter = {
     },
     
     //method only called when the user taps
-    //the if and else are used for when the tap is first administered
+    //the if is used for when the tap is first administered
     setInput : function(data){
     	this.xTap = (data.pageX - this.offset.left)/this.scale;
     	this.yTap = (data.pageY - this.offset.top)/this.scale;
