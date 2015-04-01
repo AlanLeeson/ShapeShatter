@@ -27,6 +27,9 @@ app.shapeShatter = {
 	anchor2 : undefined,
 	rope : undefined,
 	
+	entities : [],
+	shape : undefined,
+	
 	init : function(){
 	
 		this.RATIO = this.WIDTH / this.HEIGHT;
@@ -48,6 +51,7 @@ app.shapeShatter = {
 		this.anchor1 = new app.Anchor(100,100,1);
 		this.anchor2 = new app.Anchor(200,100,1);
 		this.rope = new app.Rope(this.anchor1,this.anchor2);
+		this.shape = new app.Shape(50,50,5);
 		
 		this.resize();
 		this.gameLoop();
@@ -66,6 +70,7 @@ app.shapeShatter = {
 		this.rope.render(this.ctx);
 		this.anchor1.render(this.ctx);
 		this.anchor2.render(this.ctx);
+		this.shape.render(this.ctx);
     },
     
     update : function(){

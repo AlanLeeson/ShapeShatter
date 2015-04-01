@@ -15,7 +15,6 @@ app.Anchor = function(){
 		this.mass = 24.0;
 		this.gravity = vec2.fromValues(0,9.8);
 		this.dampening = 0.95;
-		this.ySpeed = Math.random() + 1;
 		this.offest = 0;
 		this.time = 0;
 	};
