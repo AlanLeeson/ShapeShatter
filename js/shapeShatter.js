@@ -88,10 +88,10 @@ app.shapeShatter = {
     	if(this.held){
     		if(this.anchor1.clicked){
 				this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
-				this.shape.update(this.anchor1.location);
+				this.shape.update(this.anchor1,this.anchor2);
 			}else if(this.anchor2.clicked){
 				this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
-				this.shape.update(this.anchor2.location);
+				this.shape.update(this.anchor2,this.anchor1);
 			}
 		}
     },
