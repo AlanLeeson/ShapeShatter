@@ -15,6 +15,7 @@ app.Shape = function(){
 		this.maxForce = 0.1;
 		this.mass = 2;
 		this.col = "#00f";
+		this.remove = false;
 	};
 	
 	var p = Shape.prototype;
@@ -29,7 +30,7 @@ app.Shape = function(){
 		vec2.add(this.location,this.location,this.velocity);
 		this.acceleration = vec2.create();
 		if(this.checkAnchorCollision(enemyAnchor)){
-			this.col = "rgba(0,0,255,0.2)";
+			this.remove = true;
 		}
 		else if(this.checkAnchorCollision(targetAnchor)){
 			app.shapeShatter.pause = true;

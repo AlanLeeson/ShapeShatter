@@ -28,7 +28,6 @@ app.shapeShatter = {
 	rope : undefined,
 	
 	entities : [],
-	shape : undefined,
 	
 	init : function(){
 	
@@ -51,7 +50,6 @@ app.shapeShatter = {
 		this.anchor1 = new app.Anchor(100,100,1);
 		this.anchor2 = new app.Anchor(200,100,1);
 		this.rope = new app.Rope(this.anchor1,this.anchor2);
-		this.shape = new app.Shape(50,50,4);
 		this.entities.push(new app.Spawner(0,0));
 		this.entities.push(new app.Spawner(this.WIDTH,0));
 		this.entities.push(new app.Spawner(0,this.HEIGHT));
@@ -73,7 +71,6 @@ app.shapeShatter = {
 		this.rope.render(this.ctx);
 		this.anchor1.render(this.ctx);
 		this.anchor2.render(this.ctx);
-		this.shape.render(this.ctx);
 		for(var i = 0; i < this.entities.length; i ++){
 			this.entities[i].render(this.ctx);
 		}
@@ -88,12 +85,32 @@ app.shapeShatter = {
     	if(this.held){
     		if(this.anchor1.clicked){
 				this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
-				this.shape.update(this.anchor1,this.anchor2);
+				for(var i = 0; i < this.entities.length; i++){
+					if(this.entities[i].type === "shape"){
+						this.entities[i].update(this.anchor1,this.anchor2);
+					}else{
+						this.entities[i].update();
+					}
+					if(this.entities[i].remove){
+    					this.entities.splice(i,1);
+    					i -= 1;
+    				}
+				}
 			}else if(this.anchor2.clicked){
 				this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
-				this.shape.update(this.anchor2,this.anchor1);
-			}
-		}
+				for(var i = 0; i < this.entities.length; i++){
+					if(this.entities[i].type === "shape"){
+						this.entities[i].update(this.anchor2,this.anchor1);
+					}else{
+						this.entities[i].update();
+					}
+					if(this.entities[i].remove){
+    					this.entities.splice(i,1);
+    					i -= 1;
+    				}
+				}//end for
+			}//end else if
+		}//end if held
     },
     
     //method only called when the user taps
