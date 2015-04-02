@@ -39,7 +39,8 @@ app.draw = {
 	
 	polygon : function(ctx,x,y,r,s,col){
 		ctx.strokeStyle = col;
-		ctx.lineWidth = 3;
+		ctx.fillStyle = col;
+		ctx.lineWidth = 2;
 		ctx.beginPath();
 		ctx.moveTo(x+r*Math.cos(0),y+r*Math.sin(0));
 		for(var i = 1; i < s; i++){
@@ -48,5 +49,8 @@ app.draw = {
 		}
 		ctx.lineTo(x+r*Math.cos(0),y+r*Math.sin(0));
 		ctx.stroke();
+		ctx.globalAlpha = 0.5;
+		ctx.fill();
+		ctx.globalAlpha = 1.0;
 	}
 };

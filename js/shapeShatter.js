@@ -51,8 +51,11 @@ app.shapeShatter = {
 		this.anchor1 = new app.Anchor(100,100,1);
 		this.anchor2 = new app.Anchor(200,100,1);
 		this.rope = new app.Rope(this.anchor1,this.anchor2);
-		this.shape = new app.Shape(50,50,5);
-		
+		this.shape = new app.Shape(50,50,4);
+		this.entities.push(new app.Spawner(0,0));
+		this.entities.push(new app.Spawner(this.WIDTH,0));
+		this.entities.push(new app.Spawner(0,this.HEIGHT));
+		this.entities.push(new app.Spawner(this.WIDTH,this.HEIGHT));
 		this.resize();
 		this.gameLoop();
 	},
@@ -71,18 +74,26 @@ app.shapeShatter = {
 		this.anchor1.render(this.ctx);
 		this.anchor2.render(this.ctx);
 		this.shape.render(this.ctx);
+		for(var i = 0; i < this.entities.length; i ++){
+			this.entities[i].render(this.ctx);
+		}
     },
     
     update : function(){
     	this.rope.update();
-    	if(this.held){
-    		if(this.anchor1.clicked)
-			this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
-			else if(this.anchor2.clicked)
-			this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
-		}
+    	
     	this.anchor1.update();
     	this.anchor2.update();
+    	
+    	if(this.held){
+    		if(this.anchor1.clicked){
+				this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
+				this.shape.update(this.anchor1.location);
+			}else if(this.anchor2.clicked){
+				this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
+				this.shape.update(this.anchor2.location);
+			}
+		}
     },
     
     //method only called when the user taps
@@ -91,8 +102,8 @@ app.shapeShatter = {
     	this.xTap = (data.pageX - this.offset.left)/this.scale;
     	this.yTap = (data.pageY - this.offset.top)/this.scale;
     	if(this.tapped){
-    		this.checkAnchorCollision(this.anchor1);
-    		this.checkAnchorCollision(this.anchor2);
+    		this.checkAnchorTapped(this.anchor1);
+    		this.checkAnchorTapped(this.anchor2);
     	}
     	this.tapped = false;
     },
@@ -105,7 +116,7 @@ app.shapeShatter = {
     	this.anchor2.clicked = false;
     },
     
-    checkAnchorCollision : function(I){
+    checkAnchorTapped : function(I){
     	var dx = this.xTap - I.location[0];
     	var dy = this.yTap - I.location[1];
     	var collided = dx * dx + dy * dy <= I.radius * I.radius;
