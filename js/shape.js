@@ -30,6 +30,7 @@ app.Shape = function(){
 		vec2.add(this.location,this.location,this.velocity);
 		this.acceleration = vec2.create();
 		if(this.checkAnchorCollision(enemyAnchor)){
+			app.shapeShatter.entities.push(new app.Particle(this.location[0],this.location[1],this.col));
 			this.remove = true;
 		}
 		else if(this.checkAnchorCollision(targetAnchor)){
@@ -61,11 +62,6 @@ app.Shape = function(){
 		var dy = anchor.location[1] - this.location[1];
 		var distance = Math.sqrt(dx*dx + dy*dy);
 		return distance < anchor.radius + this.radius;
-	};
-	
-	p.checkRopeCollision = function(rope){
-		//ropeVec = vec2.fromValues(rope.anchor2.location[0] - rope.anchor1.location[0], rope.anchor2.location[1] - rope.anchor1.location[0]);
-		
 	};
 	
 	//calculate shortest distance between centerpoint and rope line for collision
@@ -108,10 +104,10 @@ app.Shape = function(){
 		}
 		
 		var leastDistance = Math.sqrt(dx * dx + dy * dy);
-		console.log(Math.sqrt(dx * dx + dy * dy));
 		//return Math.sqrt(dx * dx + dy * dy);
 		
 		if(leastDistance < this.radius){
+			app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
 			this.remove = true;
 		}
 		
