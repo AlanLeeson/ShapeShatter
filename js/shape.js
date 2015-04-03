@@ -35,6 +35,7 @@ app.Shape = function(){
 		else if(this.checkAnchorCollision(targetAnchor)){
 			app.shapeShatter.pause = true;
 		}
+		this.findDistance(app.shapeShatter.rope);
 	};
 	
 	p.seek = function(target){
@@ -61,6 +62,61 @@ app.Shape = function(){
 		var distance = Math.sqrt(dx*dx + dy*dy);
 		return distance < anchor.radius + this.radius;
 	};
+	
+	p.checkRopeCollision = function(rope){
+		//ropeVec = vec2.fromValues(rope.anchor2.location[0] - rope.anchor1.location[0], rope.anchor2.location[1] - rope.anchor1.location[0]);
+		
+	};
+	
+	//calculate shortest distance between centerpoint and rope line for collision
+	p.findDistance = function(rope){
+		var ptX = this.location[0];
+		var ptY = this.location[1];
+		//console.log(rope.anchor1.location[0]);
+		var p1X = rope.anchor1.location[0];
+		var p2X = rope.anchor2.location[0];
+		var p1Y = rope.anchor1.location[1];
+		var p2Y = rope.anchor2.location[1];
+		
+		var dx = p2X - p1X;
+		var dy = p2Y - p1Y;
+		
+		//if it's a point rather than a segment
+		if((dx == 0) && (dy == 0)){
+			var closest = {x: p1X, y: p1Y};
+			dx = ptX - p1X;
+			dy = ptY - p1Y;
+			return Math.sqrt(dx * dx + dy * dy);
+		}
+		
+		//calculate the t that minimizes the distance
+		var t = ((ptX - p1X) * dx + (ptY - p1Y) * dy) / (dx * dx + dy * dy);
+		
+		//see if this represents one of the segment's end points or a point in the middle.
+		if(t < 0){
+			var closest = {x: p1X, y: p1Y};
+			dx = ptX - p1X;
+			dy = ptY - p1Y;
+		} else if(t > 1){
+			var closest = {x: p2X, y: p2Y};
+			dx = ptX - p2X;
+			dy = ptY - p2Y;
+		} else {
+			var closest = {x: p1X + t * dx, y: p1Y + t * dy};
+			dx = ptX - closest.x;
+			dy = ptY - closest.y;
+		}
+		
+		var leastDistance = Math.sqrt(dx * dx + dy * dy);
+		console.log(Math.sqrt(dx * dx + dy * dy));
+		//return Math.sqrt(dx * dx + dy * dy);
+		
+		if(leastDistance < this.radius){
+			this.remove = true;
+		}
+		
+	}
+	
 	
 	return Shape;
 	
