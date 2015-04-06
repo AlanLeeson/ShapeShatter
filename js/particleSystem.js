@@ -23,6 +23,11 @@ app.ParticleSystem = function(){
 		
 		for(var i = 0; i < this.particles.length; i++){
 			this.particles[i].update();
+			
+			if(this.particles[i].remove){
+				this.particles.splice(i,1);
+    			i -= 1;
+			}
 		}
 	}
 	

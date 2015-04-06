@@ -14,7 +14,8 @@ app.Shape = function(){
 		this.maxSpeed = 4;
 		this.maxForce = 0.1;
 		this.mass = 2;
-		this.col = "#00f";
+		this.col = "#00F";
+		this.points = 10;
 		this.remove = false;
 	};
 	
@@ -30,11 +31,12 @@ app.Shape = function(){
 		vec2.add(this.location,this.location,this.velocity);
 		this.acceleration = vec2.create();
 		if(this.checkAnchorCollision(enemyAnchor)){
-			app.shapeShatter.entities.push(new app.Particle(this.location[0],this.location[1],this.col));
+			app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
+			app.shapeShatter.entities.push(new app.ScreenText(this.location[0],this.location[1],this.sides + "pts.",12,"#50,25,200"));
 			this.remove = true;
 		}
 		else if(this.checkAnchorCollision(targetAnchor)){
-			app.shapeShatter.pause = true;
+			//app.shapeShatter.pause = true;
 		}
 		this.findDistance(app.shapeShatter.rope);
 	};

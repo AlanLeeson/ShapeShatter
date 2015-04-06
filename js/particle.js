@@ -10,8 +10,7 @@ app.Particle = function(){
 		this.velocity = vec2.fromValues(Math.round(Math.random()) * 4 - 2,Math.round(Math.random()) * 4 - 2);
 		this.acceleration = vec2.create();
 		this.col = col;
-		this.life = 0;
-		this.lifeSpan = 20;
+		this.opacity = 1.0;
 		this.remove = false;
 	};
 	
@@ -20,9 +19,9 @@ app.Particle = function(){
 	p.update = function(){
 		//add velocity to location
 		vec2.add(this.location,this.location,this.velocity);
-		
-		this.life ++;
-		if(this.life >= this.lifeSpan){
+
+		this.opacity -= 0.02;
+		if(this.opacity <= 0.0){
 			this.remove = true;
 		}
 	};

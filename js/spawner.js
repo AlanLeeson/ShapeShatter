@@ -11,7 +11,7 @@ app.Spawner = function(){
 		this.radius = 50;
 		this.opacity = 0.2;
 		this.remove = false;
-		this.spawnRate = Math.random()*100 + 50
+		this.spawnRate = Math.random()*100 + 50;
 		this.spawnCount = 0;
 		this.opacityStart = 0.2;
 	};
