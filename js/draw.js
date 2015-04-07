@@ -22,7 +22,7 @@ app.draw = {
 	},
 	
 	text: function(ctx,string,x,y,size,col){
-		ctx.font = 'bold ' + size + 'px Monoscope';
+		ctx.font = 'bold ' + size + 'px georgia';
 		ctx.fillStyle = col;
 		ctx.fillText(string,x,y);
 	},

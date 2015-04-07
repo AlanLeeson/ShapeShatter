@@ -28,6 +28,8 @@ app.shapeShatter = {
 	rope : undefined,
 	
 	entities : [],
+	score : 0,
+	multiplier : 1,
 	
 	init : function(){
 	
@@ -68,6 +70,7 @@ app.shapeShatter = {
 	
 	render : function(){
 		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
+		this.drawHud();
 		this.rope.render(this.ctx);
 		this.anchor1.render(this.ctx);
 		this.anchor2.render(this.ctx);
@@ -141,6 +144,10 @@ app.shapeShatter = {
     		this.pause = false;
     		I.clicked = true;
     	}
+    },
+    
+    drawHud : function(){
+    	app.draw.text(this.ctx,this.score + "pts",this.WIDTH/2-30,this.HEIGHT-10,30,"#fff");
     },
 
 	resize : function() {

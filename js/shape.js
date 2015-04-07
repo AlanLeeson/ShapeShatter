@@ -31,12 +31,10 @@ app.Shape = function(){
 		vec2.add(this.location,this.location,this.velocity);
 		this.acceleration = vec2.create();
 		if(this.checkAnchorCollision(enemyAnchor)){
-			app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
-			app.shapeShatter.entities.push(new app.ScreenText(this.location[0],this.location[1],this.sides + "pts.",12,"#50,25,200"));
-			this.remove = true;
+			this.doMultiplierAnchor();
 		}
 		else if(this.checkAnchorCollision(targetAnchor)){
-			//app.shapeShatter.pause = true;
+			app.shapeShatter.pause = true;
 		}
 		this.findDistance(app.shapeShatter.rope);
 	};
@@ -109,12 +107,28 @@ app.Shape = function(){
 		//return Math.sqrt(dx * dx + dy * dy);
 		
 		if(leastDistance < this.radius){
-			app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
-			this.remove = true;
+			this.doRopeCollision();
 		}
 		
-	}
+	};
 	
+	p.doMultiplierAnchor = function(){
+		app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
+		var points = app.shapeShatter.multiplier * this.sides;
+		app.shapeShatter.score += points;
+		app.shapeShatter.entities.push(new app.ScreenText(this.location[0]-20,this.location[1],points + "pts.",30,"#50,25,200"));
+		app.shapeShatter.multiplier = 1;
+		this.remove = true;
+	};
+	
+	p.doRopeCollision = function(){
+		app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
+		app.shapeShatter.multiplier += 1;
+		if(app.shapeShatter.multiplier >= 9){
+			app.shapeShatter.multiplier = 9;
+		}
+		this.remove = true;
+	};
 	
 	return Shape;
 	

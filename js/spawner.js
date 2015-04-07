@@ -35,7 +35,7 @@ app.Spawner = function(){
 	};
 	
 	p.spawnShape =function(){
-		app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*10 + 3)));
+		app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*3 + 3)));
 	};
 	
 	return Spawner;

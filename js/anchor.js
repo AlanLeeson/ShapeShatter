@@ -68,6 +68,10 @@ app.Anchor = function(){
 			color = "#f00";
 		}
 		app.draw.circle(ctx,this.location[0],this.location[1],this.radius,color);
+		if(!this.clicked){
+			app.draw.text(ctx,app.shapeShatter.multiplier,this.location[0]-10,this.location[1]+5,20,"#fff");
+			app.draw.text(ctx,"x",this.location[0]+2,this.location[1]+5,10,"#fff");
+		}
 	};
 	
 	return Anchor;
