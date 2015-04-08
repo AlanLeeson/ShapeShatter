@@ -17,6 +17,10 @@ app.Anchor = function(){
 		this.dampening = 0.95;
 		this.offest = 0;
 		this.time = 0;
+		this.minorExplosion = false;
+		this.explosionRadius = this.radius;
+		this.explosionRadiusMax = 0;
+		this.degredation = 0;
 	};
 	
 	var p = Anchor.prototype;
@@ -62,6 +66,19 @@ app.Anchor = function(){
 	
 	p.render = function(ctx){
 		var color = undefined;
+		
+		if(this.minorExplosion){
+			app.draw.circle(ctx,this.location[0],this.location[1],this.explosionRadius-5,"rgba(255,255,255,0.9)");
+			app.draw.circle(ctx,this.location[0],this.location[1],this.explosionRadius,"rgba(255,20,50,0.5)");
+			this.explosionRadius += 0.7 - this.degredation;
+			this.degredation -= 0.02;
+			if(this.explosionRadius >= this.explosionRadiusMax){
+				this.explosionRadius = this.radius;
+				this.explosionRadiusMax = 0;
+				this.minorExplosion = 0;
+			}
+		}
+		
 		if(this.clicked){
 			color = "rgba(255,0,0,0.5)";
 		}else{

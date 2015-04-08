@@ -27,6 +27,8 @@ app.Shape = function(){
 		}
 		this.points = s; //points relative to numsides
 		this.remove = false;
+		this.targetAnchor = undefined;
+		this.enemyAnchor = undefined;
 	};
 	
 	var p = Shape.prototype;
@@ -36,6 +38,8 @@ app.Shape = function(){
 	};
 	
 	p.update = function(targetAnchor,enemyAnchor){
+		this.targetAnchor = targetAnchor;
+		this.enemyAnchor = enemyAnchor;
 		this.seek(targetAnchor);
 		vec2.add(this.velocity,this.velocity,this.acceleration);
 		vec2.add(this.location,this.location,this.velocity);
@@ -45,6 +49,7 @@ app.Shape = function(){
 		}
 		else if(this.checkAnchorCollision(targetAnchor)){
 			app.shapeShatter.pause = true;
+			app.shapeShatter.multiplier = 0;
 		}
 		this.findDistance(app.shapeShatter.rope);
 	};
@@ -126,8 +131,11 @@ app.Shape = function(){
 		app.shapeShatter.entities.push(new app.ParticleSystem(this.location[0],this.location[1],this.sides,this.col));
 		var points = app.shapeShatter.multiplier * this.sides;
 		app.shapeShatter.score += points;
-		app.shapeShatter.entities.push(new app.ScreenText(this.location[0]-20,this.location[1],points + "pts.",30,"#50,25,200"));
+		app.shapeShatter.entities.push(new app.ScreenText(
+			this.location[0]-points*2,this.location[1],points + "pts.",points*2,"#50,25,200"));
 		app.shapeShatter.multiplier = 1;
+		this.enemyAnchor.minorExplosion = true;
+		this.enemyAnchor.explosionRadiusMax = this.enemyAnchor.radius + (app.shapeShatter.multiplier * 15);
 		this.remove = true;
 	};
 	
