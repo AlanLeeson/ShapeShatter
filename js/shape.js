@@ -11,11 +11,21 @@ app.Shape = function(){
 		this.acceleration = vec2.create();
 		this.sides = s;
 		this.radius = 5;
-		this.maxSpeed = 4;
+		this.maxSpeed = s; //speed relative to numsides
 		this.maxForce = 0.1;
 		this.mass = 2;
-		this.col = "#00F";
-		this.points = 10;
+		//color based on num sides
+		if(this.sides == 3){
+			this.col = "#00F";
+		} else if(this.sides == 4){
+			this.col = "yellow";
+		} else if(this.sides == 5){
+			this.col = "purple";
+		} else if(this.sides > 5){
+			this.col = "black";
+			this.radius = 9;
+		}
+		this.points = s; //points relative to numsides
 		this.remove = false;
 	};
 	

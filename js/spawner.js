@@ -35,7 +35,20 @@ app.Spawner = function(){
 	};
 	
 	p.spawnShape =function(){
-		app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*3 + 3)));
+		//app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*3 + 3)));
+		if(app.shapeShatter.score < 50){
+			app.shapeShatter.entities.push(new app.Shape(this.x,this.y,3));
+		} else if(app.shapeShatter.score < 200){ //spawn squares
+			app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*2 + 3)));
+		} else if(app.shapeShatter.score < 500){ //begin spawn 5 sided
+			app.shapeShatter.entities.push(new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3)));
+		} else {
+			app.shapeShatter.entities.push(new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3)));
+			if(parseInt(Math.random()*3 + 3) == 4){
+				app.shapeShatter.entities.push(new app.Shape(this.x, this.y, 8));
+			}
+		}
+		
 	};
 	
 	return Spawner;
