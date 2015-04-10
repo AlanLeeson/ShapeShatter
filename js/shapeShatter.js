@@ -14,7 +14,7 @@ app.shapeShatter = {
 	ctx :  undefined,
 	x : 0,
 	
-	pause : true,
+	pause : false,
 	tapped : false,
 	held : false,
 	xTap : undefined,
@@ -30,6 +30,12 @@ app.shapeShatter = {
 	entities : [],
 	score : 0,
 	multiplier : 1,
+	
+	GAME_STATE_MENU : 0,
+	GAME_STATE_PLAY : 1,
+	gameState : 0,
+	
+	menuButton : undefined,
 	
 	init : function(){
 	
@@ -49,6 +55,15 @@ app.shapeShatter = {
 		this.android = this.ua.indexOf('android') > -1 ? true : false;
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
+		//
+		this.gameState = this.GAME_STATE_MENU;
+		
+		//Menu
+		this.menuButton = new app.InputButton(this.WIDTH/2,100,2,2,"Play",
+			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
+				app.shapeShatter.pause = true;});
+		
+		//classic level
 		this.anchor1 = new app.Anchor(100,100,1);
 		this.anchor2 = new app.Anchor(200,100,1);
 		this.rope = new app.Rope(this.anchor1,this.anchor2);
@@ -70,21 +85,34 @@ app.shapeShatter = {
 	
 	render : function(){
 		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
-		this.drawHud();
-		this.rope.render(this.ctx);
-		this.anchor1.render(this.ctx);
-		this.anchor2.render(this.ctx);
-		for(var i = 0; i < this.entities.length; i ++){
-			this.entities[i].render(this.ctx);
+		if(this.gameState === this.GAME_STATE_MENU){
+    		this.menuButton.render(this.ctx);
+    	}else if(this.gameState === this.GAME_STATE_PLAY){
+			this.drawHud();
+			this.rope.render(this.ctx);
+			this.anchor1.render(this.ctx);
+			this.anchor2.render(this.ctx);
+			for(var i = 0; i < this.entities.length; i ++){
+				this.entities[i].render(this.ctx);
+			}
 		}
     },
     
     update : function(){
-    	this.rope.update();
+    	if(this.gameState === this.GAME_STATE_MENU){
+    		this.menuButton.update();
+    	}else if(this.gameState === this.GAME_STATE_PLAY){
     	
-    	this.anchor1.update();
-    	this.anchor2.update();
+    		this.rope.update();
     	
+    		this.anchor1.update();
+    		this.anchor2.update();
+    	
+    		this.checkGameElements();
+    	}
+    },
+    
+    checkGameElements : function(){
     	if(this.held){
     		if(this.anchor1.clicked){
 				this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
@@ -114,6 +142,17 @@ app.shapeShatter = {
 				}//end for
 			}//end else if
 		}//end if held
+    },
+    
+    mouseUp : function(){
+    	this.held = false;
+    	if(this.gameState === this.GAME_STATE_PLAY){
+    		this.pauseScene();
+    	}
+    },
+    
+    pressed : function(data){
+    	this.setInput(data);
     },
     
     //method only called when the user taps
