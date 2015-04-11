@@ -35,7 +35,7 @@ app.shapeShatter = {
 	GAME_STATE_PLAY : 1,
 	gameState : 0,
 	
-	menuButton : undefined,
+	menuElements : [],
 	
 	init : function(){
 	
@@ -59,18 +59,15 @@ app.shapeShatter = {
 		this.gameState = this.GAME_STATE_MENU;
 		
 		//Menu
-		this.menuButton = new app.InputButton(this.WIDTH/2,100,2,2,"Play",
+		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,2,2,"Play",false,
 			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
-				app.shapeShatter.pause = true;});
+				app.shapeShatter.pause = true;}));
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,2,2,"Classic",true,
+			function(){app.Level.level1();}));
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/2+100,300,2,2,"level3",false,
+			function(){app.Level.level2();}));
 		
 		//classic level
-		this.anchor1 = new app.Anchor(100,100,1);
-		this.anchor2 = new app.Anchor(200,100,1);
-		this.rope = new app.Rope(this.anchor1,this.anchor2);
-		this.entities.push(new app.Spawner(0,0));
-		this.entities.push(new app.Spawner(this.WIDTH,0));
-		this.entities.push(new app.Spawner(0,this.HEIGHT));
-		this.entities.push(new app.Spawner(this.WIDTH,this.HEIGHT));
 		this.resize();
 		this.gameLoop();
 	},
@@ -86,7 +83,9 @@ app.shapeShatter = {
 	render : function(){
 		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
 		if(this.gameState === this.GAME_STATE_MENU){
-    		this.menuButton.render(this.ctx);
+    		for(var i = 0; i < this.menuElements.length; i++){
+    			this.menuElements[i].render(this.ctx);
+    		}
     	}else if(this.gameState === this.GAME_STATE_PLAY){
 			this.drawHud();
 			this.rope.render(this.ctx);
@@ -100,7 +99,9 @@ app.shapeShatter = {
     
     update : function(){
     	if(this.gameState === this.GAME_STATE_MENU){
-    		this.menuButton.update();
+    		for(var i = 0; i < this.menuElements.length; i++){
+    			this.menuElements[i].update();
+    		}
     	}else if(this.gameState === this.GAME_STATE_PLAY){
     	
     		this.rope.update();
