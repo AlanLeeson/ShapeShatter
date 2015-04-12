@@ -59,13 +59,15 @@ app.shapeShatter = {
 		this.gameState = this.GAME_STATE_MENU;
 		
 		//Menu
-		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,2,2,"Play",false,
+		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,20,"Play",false,
 			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
 				app.shapeShatter.pause = true;}));
-		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,2,2,"Classic",true,
-			function(){app.Level.level1();}));
-		this.menuElements.push(new app.InputButton("level",this.WIDTH/2+100,300,2,2,"level3",false,
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/4-20,300,40,"Level1",false,
 			function(){app.Level.level2();}));
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,40,"Level2",true,
+			function(){app.Level.level1();}));
+		this.menuElements.push(new app.InputButton("level",this.WIDTH*3/4+20,300,40,"Level3",false,
+			function(){app.Level.level3();}));
 		
 		//classic level
 		this.resize();
@@ -88,12 +90,12 @@ app.shapeShatter = {
     		}
     	}else if(this.gameState === this.GAME_STATE_PLAY){
 			this.drawHud();
-			this.rope.render(this.ctx);
-			this.anchor1.render(this.ctx);
-			this.anchor2.render(this.ctx);
 			for(var i = 0; i < this.entities.length; i ++){
 				this.entities[i].render(this.ctx);
 			}
+			this.rope.render(this.ctx);
+			this.anchor1.render(this.ctx);
+			this.anchor2.render(this.ctx);
 		}
     },
     

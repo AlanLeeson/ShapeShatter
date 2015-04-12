@@ -4,15 +4,14 @@ var app = app || {};
 
 app.InputButton = function(){
 
-	var InputButton = function(type,x,y,w,h,string,defaul,action){
+	var InputButton = function(type,x,y,s,string,defaul,action){
 		this.type = type;
 		this.x = x;
 		this.y = y;
-		this.width = w;
-		this.height = h;
 		this.text = string;
 		this.action = action;
-		this.radius = 20
+		this.radius = s;
+		this.textSize = s;
 		this.remove = false;
 		this.selected = defaul;
 		if(this.selected){
@@ -28,7 +27,7 @@ app.InputButton = function(){
 			app.draw.circle(ctx,this.x,this.y,this.radius + 10,"rgba(255,20,50,0.5)");
 		}
 		app.draw.circle(ctx,this.x,this.y,this.radius,"#000");
-		app.draw.text(ctx,this.text,this.x-10,this.y,10,"#fff");
+		app.draw.text(ctx,this.text,this.x-this.textSize*3/4,this.y,this.textSize/2,"#fff");
 	};
 	
 	p.update = function(){
