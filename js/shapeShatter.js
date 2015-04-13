@@ -25,7 +25,7 @@ app.shapeShatter = {
 	
 	anchor1 : undefined,
 	anchor2 : undefined,
-	rope : undefined,
+	ropes : [],
 	
 	entities : [],
 	score : 0,
@@ -34,6 +34,11 @@ app.shapeShatter = {
 	GAME_STATE_MENU : 0,
 	GAME_STATE_PLAY : 1,
 	gameState : 0,
+	
+	MODE_INFINITE : 0,
+	MODE_PRACTICE : 1,
+	MODE_HARDCORE : 2,
+	gameMode : 0,
 	
 	menuElements : [],
 	
@@ -58,27 +63,39 @@ app.shapeShatter = {
 		//
 		this.gameState = this.GAME_STATE_MENU;
 		
+		//
 		//Menu
+		//
+		
+		//Play Button
 		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,20,"Play",false,
 			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
 				app.shapeShatter.pause = true;}));
+		//levels
 		this.menuElements.push(new app.InputButton("level",this.WIDTH/4-20,300,40,"Level1",false,
 			function(){app.Level.level2();}));
+		//classic level
 		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,40,"Level2",true,
 			function(){app.Level.level1();}));
 		this.menuElements.push(new app.InputButton("level",this.WIDTH*3/4+20,300,40,"Level3",false,
 			function(){app.Level.level3();}));
-		
-		//classic level
+		//modes
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH/2,400,40,"Infinite",true,
+			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_INFINITE;}));
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH/4-20,400,40,"Practice",false,
+			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_PRACTICE;}));
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH*3/4+20,400,40,"Hardcore",false,
+			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_HARDCORE;}));
+
 		this.resize();
 		this.gameLoop();
 	},
 	
 	gameLoop : function(){
 		requestAnimationFrame(this.gameLoop.bind(this));
-		if(!this.pause){
+	
     		this.update();
-    	}
+    
     	this.render();
 	},
 	
@@ -93,7 +110,10 @@ app.shapeShatter = {
 			for(var i = 0; i < this.entities.length; i ++){
 				this.entities[i].render(this.ctx);
 			}
-			this.rope.render(this.ctx);
+			//render ropes
+			for(var i = 0; i < this.ropes.length; i++){
+				this.ropes[i].render(this.ctx);
+			}
 			this.anchor1.render(this.ctx);
 			this.anchor2.render(this.ctx);
 		}
@@ -104,9 +124,11 @@ app.shapeShatter = {
     		for(var i = 0; i < this.menuElements.length; i++){
     			this.menuElements[i].update();
     		}
-    	}else if(this.gameState === this.GAME_STATE_PLAY){
+    	}else if(this.gameState === this.GAME_STATE_PLAY && !this.pause){
     	
-    		this.rope.update();
+    		for(var i = 0; i < this.ropes.length; i ++){
+    			this.ropes[i].update();
+    		}
     	
     		this.anchor1.update();
     		this.anchor2.update();
@@ -186,6 +208,20 @@ app.shapeShatter = {
     		this.pause = false;
     		I.clicked = true;
     	}
+    },
+    
+    returnToMenu : function(){
+    	this.gameState = this.GAME_STATE_MENU;
+    	this.pauseScene();
+    	this.entities = [];
+		this.ropes = [];
+		for(var i = 0; i < this.menuElements.length; i++){
+			if(this.menuElements[i].type !== "play" && this.menuElements[i].selected){
+				this.menuElements[i].action();
+			}else{
+				this.menuElements[i].selected = false;
+			}
+		}
     },
     
     drawHud : function(){

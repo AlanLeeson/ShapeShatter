@@ -48,10 +48,19 @@ app.Shape = function(){
 			this.doMultiplierAnchor();
 		}
 		else if(this.checkAnchorCollision(targetAnchor)){
-			app.shapeShatter.pause = true;
+			if(app.shapeShatter.gameMode === app.shapeShatter.MODE_INFINITE)
+			{
+				app.shapeShatter.pause = true;
+			}else if(app.shapeShatter.gameMode === app.shapeShatter.MODE_PRACTICE){
+			
+			}else if(app.shapeShatter.gameMode === app.shapeShatter.MODE_HARDCORE){
+				app.shapeShatter.returnToMenu();
+			}
 			app.shapeShatter.multiplier = 0;
 		}
-		this.findDistance(app.shapeShatter.rope);
+		for(var i = 0; i < app.shapeShatter.ropes.length; i++){
+			this.findDistance(app.shapeShatter.ropes[i]);
+		}
 	};
 	
 	p.seek = function(target){

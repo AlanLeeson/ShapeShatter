@@ -9,6 +9,8 @@ app.Rope = function(){
 		this.restLength = 100;
 		this.anchor1 = a1;
 		this.anchor2 = a2;
+		this.start = a1.location;
+		this.end = a2.location;
 		this.k = 1.0;
 	};
 	
