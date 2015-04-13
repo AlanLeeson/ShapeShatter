@@ -6,10 +6,12 @@ app.Spawner = function(){
 
 	var Spawner = function(x,y){
 		this.type = "spawner";
+		this.shape = "nothing"; // holds the shape being spawned, added to check the number of sides to deduce color
 		this.x = x;
 		this.y = y;
 		this.radius = 50;
 		this.opacity = 0.2;
+		this.color = "rgba(0,0,255," + this.opacity + ");";
 		this.remove = false;
 		this.spawnRate = Math.random()*100 + 50;
 		this.spawnCount = 0;
@@ -25,27 +27,40 @@ app.Spawner = function(){
 			if(this.opacity >= 1){
 				this.opacity = this.opacityStart;
 				this.spawnShape();
+				if(this.shape.sides == 3){
+					this.color = "rgba(0,0,255," + this.opacity + ");";
+				} else if(this.shape.sides == 4){
+					this.color = "rgba(255,255,0," + this.opacity + ");";
+				} else if(this.shape.sides == 5){
+					this.color = "rgba(255,0,255," + this.opacity + ");";
+				} else if(this.shape.sides == 8){
+					this.color = "rgba(0,0,0," + this.opacity + ");";
+				}
 				this.spawnCount = 0;
 			}
 		}
 	};
 	
 	p.render = function(ctx){
-		app.draw.circle(ctx,this.x,this.y,this.radius,"rgba(221,0,72," + this.opacity + ");");
+		app.draw.circle(ctx,this.x,this.y,this.radius,this.color);
 	};
 	
 	p.spawnShape =function(){
-		//app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*3 + 3)));
 		if(app.shapeShatter.score < 50){
-			app.shapeShatter.entities.push(new app.Shape(this.x,this.y,3));
+			this.shape = new app.Shape(this.x, this.y, 3);
+			app.shapeShatter.entities.push(this.shape);
 		} else if(app.shapeShatter.score < 200){ //spawn squares
-			app.shapeShatter.entities.push(new app.Shape(this.x,this.y,parseInt(Math.random()*2 + 3)));
+			this.shape = new app.Shape(this.x,this.y,parseInt(Math.random()*2 + 3));
+			app.shapeShatter.entities.push(this.shape);
 		} else if(app.shapeShatter.score < 500){ //begin spawn 5 sided
-			app.shapeShatter.entities.push(new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3)));
+			this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
+			app.shapeShatter.entities.push(this.shape);
 		} else {
-			app.shapeShatter.entities.push(new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3)));
+			this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
+			app.shapeShatter.entities.push(this.shape);
 			if(parseInt(Math.random()*3 + 3) == 4){
-				app.shapeShatter.entities.push(new app.Shape(this.x, this.y, 8));
+				this.shape = new app.Shape(this.x, this.y, 8);
+				app.shapeShatter.entities.push(this.shape);
 			}
 		}
 		
