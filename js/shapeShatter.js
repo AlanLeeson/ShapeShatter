@@ -41,6 +41,7 @@ app.shapeShatter = {
 	gameMode : 0,
 	
 	menuElements : [],
+	menuButton: undefined,
 	
 	init : function(){
 	
@@ -62,6 +63,11 @@ app.shapeShatter = {
 		
 		//
 		this.gameState = this.GAME_STATE_MENU;
+		
+		this.menuButton = new app.InputButton("menuButton",this.WIDTH/2,400,40,"Menu",false,
+			function(){
+				app.shapeShatter.returnToMenu();
+			});
 		
 		//
 		//Menu
@@ -116,25 +122,43 @@ app.shapeShatter = {
 			}
 			this.anchor1.render(this.ctx);
 			this.anchor2.render(this.ctx);
+			
+			if(this.pause){
+				this.ctx.save();
+				app.draw.rect(this.ctx,0,0,1000,1000,"rgba(0,0,0,0.3);");
+				app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.3);");
+				app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.3);");
+				this.ctx.restore();
+				app.draw.rect(this.ctx,0,0,this.WIDTH,20,"rgba(0,0,0,1);");
+				app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,"rgba(0,0,0,1);");
+				app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,"rgba(0,0,0,1);");
+				app.draw.rect(this.ctx,0,0,20,this.HEIGHT,"rgba(0,0,0,1);");
+				this.menuButton.render(this.ctx);
+				this.menuButton.update();
+				//app.draw.text(this.ctx, "Tap and Hold", this.WIDTH/3.5, this.HEIGHT/2, 18, "white");
+				//app.draw.text(this.ctx, "Either Red Circle", this.WIDTH/3.5, this.HEIGHT/2 + 30, 18, "white");
+				//app.draw.text(this.ctx, "To Begin", this.WIDTH/3.5, this.HEIGHT/2 + 60, 18, "white");
+			}
 		}
+	
     },
     
     update : function(){
-    	if(this.gameState === this.GAME_STATE_MENU){
-    		for(var i = 0; i < this.menuElements.length; i++){
-    			this.menuElements[i].update();
-    		}
-    	}else if(this.gameState === this.GAME_STATE_PLAY && !this.pause){
-    	
-    		for(var i = 0; i < this.ropes.length; i ++){
-    			this.ropes[i].update();
-    		}
-    	
-    		this.anchor1.update();
-    		this.anchor2.update();
-    	
-    		this.checkGameElements();
-    	}
+		if(this.gameState === this.GAME_STATE_MENU){
+			for(var i = 0; i < this.menuElements.length; i++){
+				this.menuElements[i].update();
+			}
+		} else if(this.gameState === this.GAME_STATE_PLAY && !this.pause){
+		
+			for(var i = 0; i < this.ropes.length; i ++){
+				this.ropes[i].update();
+			}
+		
+			this.anchor1.update();
+			this.anchor2.update();
+		
+			this.checkGameElements();
+		}
     },
     
     checkGameElements : function(){
@@ -222,6 +246,7 @@ app.shapeShatter = {
 				this.menuElements[i].selected = false;
 			}
 		}
+		
     },
     
     drawHud : function(){
