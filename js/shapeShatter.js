@@ -41,6 +41,7 @@ app.shapeShatter = {
 	gameMode : 0,
 	
 	menuElements : [],
+	backgroundImage : undefined,
 	menuButton: undefined,
 	
 	init : function(){
@@ -72,6 +73,10 @@ app.shapeShatter = {
 		//
 		//Menu
 		//
+		
+		//Background image
+		this.BackgroundImage = new Image(320,480);
+		this.BackgroundImage.src = "images/Background.png";
 		
 		//Play Button
 		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,20,"Play",false,
@@ -106,12 +111,13 @@ app.shapeShatter = {
 	},
 	
 	render : function(){
-		app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
 		if(this.gameState === this.GAME_STATE_MENU){
+			this.ctx.drawImage(this.BackgroundImage,0,0,320,480);
     		for(var i = 0; i < this.menuElements.length; i++){
     			this.menuElements[i].render(this.ctx);
     		}
     	}else if(this.gameState === this.GAME_STATE_PLAY){
+			app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
 			this.drawHud();
 			for(var i = 0; i < this.entities.length; i ++){
 				this.entities[i].render(this.ctx);
