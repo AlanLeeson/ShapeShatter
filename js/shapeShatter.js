@@ -72,7 +72,7 @@ app.shapeShatter = {
 		this.android = this.ua.indexOf('android') > -1 ? true : false;
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
-		this.gameState = this.GAME_STATE_MENU;
+		this.gameState = this.GAME_STATE_TUTORIAL;
 		
 		//makes the menu button
 		this.menuButton = new app.InputButton("menu",this.WIDTH/2,400,40,"Menu",false,
