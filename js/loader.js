@@ -11,8 +11,6 @@ window.onload = function() {
 	
 	window.addEventListener('mousedown',function(e){
 		e.preventDefault();
-		app.shapeShatter.tapped = true;
-		app.shapeShatter.held = true;
 		app.shapeShatter.pressed(e);
 	}, false);
 	
@@ -28,8 +26,6 @@ window.onload = function() {
 	
 	window.addEventListener('touchstart',function(e){
 		e.preventDefault();
-		app.shapeShatter.tapped = true;
-		app.shapeShatter.held = true;
 		app.shapeShatter.pressed(e.touches[0]);
 	},false);
 	

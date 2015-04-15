@@ -31,9 +31,10 @@ app.shapeShatter = {
 	score : 0,
 	multiplier : 1,
 	
-	GAME_STATE_MENU : 0,
-	GAME_STATE_PLAY : 1,
-	gameState : 0,
+	GAME_STATE_TUTORIAL : 0,
+	GAME_STATE_MENU : 1,
+	GAME_STATE_PLAY : 2,
+	gameState : 1,
 	
 	MODE_INFINITE : 0,
 	MODE_PRACTICE : 1,
@@ -43,6 +44,10 @@ app.shapeShatter = {
 	menuElements : [],
 	backgroundImage : undefined,
 	menuButton: undefined,
+	
+	tutorialElements : [],
+	tutorialIndex : 0,
+	tutorialButton : undefined,
 	
 	init : function(){
 	
@@ -62,41 +67,21 @@ app.shapeShatter = {
 		this.android = this.ua.indexOf('android') > -1 ? true : false;
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
-		//
-		this.gameState = this.GAME_STATE_MENU;
+		this.gameState = this.GAME_STATE_TUTORIAL;
 		
-		this.menuButton = new app.InputButton("menuButton",this.WIDTH/2,400,40,"Menu",false,
-			function(){
-				app.shapeShatter.returnToMenu();
-			});
+		//makes the menu button
+		this.menuButton = new app.InputButton("menu",this.WIDTH/2,400,40,"Menu",false,
+			function(){app.shapeShatter.returnToMenu();});
 		
-		//
+		//Makes the tutorial step-through button
+		this.tutorialButton = new app.InputButton("tutorial",this.WIDTH-35,this.HEIGHT-35,30,"Next",false,
+			function(){app.shapeShatter.tutorialIndex ++;});
+		
 		//Menu
-		//
+		this.initMenu();
 		
-		//Background image
-		this.BackgroundImage = new Image(320,480);
-		this.BackgroundImage.src = "images/Background.png";
-		
-		//Play Button
-		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,20,"Play",false,
-			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
-				app.shapeShatter.pause = true;}));
-		//levels
-		this.menuElements.push(new app.InputButton("level",this.WIDTH/4-20,300,40,"Level1",false,
-			function(){app.Level.level2();}));
-		//classic level
-		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,40,"Level2",true,
-			function(){app.Level.level1();}));
-		this.menuElements.push(new app.InputButton("level",this.WIDTH*3/4+20,300,40,"Level3",false,
-			function(){app.Level.level3();}));
-		//modes
-		this.menuElements.push(new app.InputButton("mode",this.WIDTH/2,400,40,"Infinite",true,
-			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_INFINITE;}));
-		this.menuElements.push(new app.InputButton("mode",this.WIDTH/4-20,400,40,"Practice",false,
-			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_PRACTICE;}));
-		this.menuElements.push(new app.InputButton("mode",this.WIDTH*3/4+20,400,40,"Hardcore",false,
-			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_HARDCORE;}));
+		//Tutorial
+		this.initTutorial();
 
 		this.resize();
 		this.gameLoop();
@@ -104,14 +89,15 @@ app.shapeShatter = {
 	
 	gameLoop : function(){
 		requestAnimationFrame(this.gameLoop.bind(this));
-	
-    		this.update();
-    
+    	this.update();
     	this.render();
 	},
 	
 	render : function(){
-		if(this.gameState === this.GAME_STATE_MENU){
+		if(this.gameState === this.GAME_STATE_TUTORIAL){
+			this.tutorialElements[this.tutorialIndex].render(this.ctx);
+			this.tutorialButton.render(this.ctx);
+		}else if(this.gameState === this.GAME_STATE_MENU){
 			this.ctx.drawImage(this.BackgroundImage,0,0,320,480);
     		for(var i = 0; i < this.menuElements.length; i++){
     			this.menuElements[i].render(this.ctx);
@@ -130,32 +116,18 @@ app.shapeShatter = {
 			this.anchor2.render(this.ctx);
 			
 			if(this.pause){
-				this.ctx.save();
-				app.draw.rect(this.ctx,0,0,1000,1000,"rgba(0,0,0,0.3);");
-				app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.3);");
-				app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.3);");
-				this.ctx.restore();
-				app.draw.rect(this.ctx,0,0,this.WIDTH,20,"rgba(0,0,0,1);");
-				app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,"rgba(0,0,0,1);");
-				app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,"rgba(0,0,0,1);");
-				app.draw.rect(this.ctx,0,0,20,this.HEIGHT,"rgba(0,0,0,1);");
-				this.menuButton.render(this.ctx);
-				this.menuButton.update();
-				//app.draw.text(this.ctx, "Tap and Hold", this.WIDTH/3.5, this.HEIGHT/2, 18, "white");
-				//app.draw.text(this.ctx, "Either Red Circle", this.WIDTH/3.5, this.HEIGHT/2 + 30, 18, "white");
-				//app.draw.text(this.ctx, "To Begin", this.WIDTH/3.5, this.HEIGHT/2 + 60, 18, "white");
+				this.doPauseScene();
 			}
 		}
 	
     },
     
     update : function(){
-		if(this.gameState === this.GAME_STATE_MENU){
-			for(var i = 0; i < this.menuElements.length; i++){
-				this.menuElements[i].update();
-			}
+    	if(this.gameState === this.GAME_STATE_TUTORIAL){
+    		this.tutorialElements[this.tutorialIndex].update();
+		}else if(this.gameState === this.GAME_STATE_MENU){
+			//Isn't needed really
 		} else if(this.gameState === this.GAME_STATE_PLAY && !this.pause){
-		
 			for(var i = 0; i < this.ropes.length; i ++){
 				this.ropes[i].update();
 			}
@@ -207,6 +179,19 @@ app.shapeShatter = {
     },
     
     pressed : function(data){
+    	this.tapped = true;
+    	this.held = true;
+    	if(this.gameState === this.GAME_STATE_TUTORIAL){
+			this.tutorialButton.update();
+			if(this.tutorialIndex >= this.tutorialElements.length){
+    				this.gameState = this.GAME_STATE_MENU;
+    		}
+			this.tutorialButton.selected = false;
+		}else if(this.gameState === this.GAME_STATE_MENU){
+			for(var i = 0; i < this.menuElements.length; i++){
+				this.menuElements[i].update();
+			}
+		} 
     	this.setInput(data);
     },
     
@@ -240,11 +225,24 @@ app.shapeShatter = {
     	}
     },
     
+    doPauseScene : function(){
+		app.draw.rect(this.ctx,0,0,1000,1000,"rgba(0,0,0,0.3);");
+		app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.3);");
+		app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.3);");
+		app.draw.rect(this.ctx,0,0,this.WIDTH,20,"rgba(0,0,0,1);");
+		app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,"rgba(0,0,0,1);");
+		app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,"rgba(0,0,0,1);");
+		app.draw.rect(this.ctx,0,0,20,this.HEIGHT,"rgba(0,0,0,1);");
+		this.menuButton.render(this.ctx);
+		this.menuButton.update();
+    },
+    
     returnToMenu : function(){
     	this.gameState = this.GAME_STATE_MENU;
     	this.pauseScene();
     	this.entities = [];
 		this.ropes = [];
+		this.score = 0;
 		for(var i = 0; i < this.menuElements.length; i++){
 			if(this.menuElements[i].type !== "play" && this.menuElements[i].selected){
 				this.menuElements[i].action();
@@ -257,6 +255,39 @@ app.shapeShatter = {
     
     drawHud : function(){
     	app.draw.text(this.ctx,this.score + "pts",this.WIDTH/2-30,this.HEIGHT-10,30,"#fff");
+    },
+    
+    initTutorial : function(){
+    	this.tutorialElements.push(new app.Slide("images/Tutorial1-1.png","images/Tutorial1-2.png"));
+    	this.tutorialElements.push(new app.Slide("images/Tutorial2-1.png","images/Tutorial2-2.png"));
+    	this.tutorialElements.push(new app.Slide("images/Tutorial3-1.png","images/Tutorial3-2.png"));
+    	this.tutorialElements.push(new app.Slide("images/Tutorial4-1.png","images/Tutorial4-2.png"));
+    },
+    
+    initMenu : function(){
+    	//Background image
+		this.BackgroundImage = new Image(320,480);
+		this.BackgroundImage.src = "images/Background.png";
+		
+		//Play Button
+		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,20,"Play",false,
+			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
+				app.shapeShatter.pause = true;}));
+		//levels
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/4-20,300,40,"Level1",false,
+			function(){app.Level.level2();}));
+		//classic level
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,40,"Level2",true,
+			function(){app.Level.level1();}));
+		this.menuElements.push(new app.InputButton("level",this.WIDTH*3/4+20,300,40,"Level3",false,
+			function(){app.Level.level3();}));
+		//modes
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH/2,400,40,"Infinite",true,
+			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_INFINITE;}));
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH/4-20,400,40,"Practice",false,
+			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_PRACTICE;}));
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH*3/4+20,400,40,"Hardcore",false,
+			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_HARDCORE;}));
     },
 
 	resize : function() {
