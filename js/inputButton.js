@@ -17,6 +17,9 @@ app.InputButton = function(){
 		this.textSize = s;
 		this.remove = false;
 		this.selected = defaul;
+		this.click = new Audio('sound/click.mp3');
+		this.click.volume = 1;
+		this.click.loop = false;
 		if(this.selected){
 			this.action();
 		}
@@ -41,6 +44,7 @@ app.InputButton = function(){
 			if(this.checkTapped()){
 				//performs the action specified in the buttons creation
 				this.action();
+				this.click.play();
 				//checks if the other buttons are selected, then turn them off.
 				for(var i = 0; i < app.shapeShatter.menuElements.length; i++){
 					if(app.shapeShatter.menuElements[i].type === this.type){

@@ -16,6 +16,13 @@ app.Shape = function(){
 		this.shatterSound = new Audio('sound/shatter.wav');
 		this.shatterSound.volume = 0.3;
 		this.shatterSound.loop = false;
+		this.smashSound = new Audio('sound/smash.wav');
+		this.smashSound.volume = 0.4;
+		this.smashSound.loop = false;
+		this.deathSound = new Audio('sound/death.wav');
+		this.deathSound.volume = 1;
+		this.deathSound.loop = false;
+		
 		this.mass = 2;
 		//color based on num sides
 		if(this.sides == 3){
@@ -60,6 +67,7 @@ app.Shape = function(){
 				app.shapeShatter.returnToMenu();
 			}
 			app.shapeShatter.multiplier = 0;
+			this.deathSound.play();
 		}
 		for(var i = 0; i < app.shapeShatter.ropes.length; i++){
 			this.findDistance(app.shapeShatter.ropes[i]);
@@ -149,6 +157,7 @@ app.Shape = function(){
 		this.enemyAnchor.minorExplosion = true;
 		this.enemyAnchor.explosionRadiusMax = this.enemyAnchor.radius + (app.shapeShatter.multiplier * 15);
 		this.remove = true;
+		this.smashSound.play();
 	};
 	
 	p.doRopeCollision = function(){

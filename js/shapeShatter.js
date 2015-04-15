@@ -64,7 +64,7 @@ app.shapeShatter = {
 		
 		//musica
 		this.song = new Audio('sound/background.wav');
-		this.song.volume = 0.6;
+		this.song.volume = 0.3;
 		this.song.loop = true;
 		this.song.play();
 		
