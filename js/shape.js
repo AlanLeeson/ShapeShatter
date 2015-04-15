@@ -13,6 +13,9 @@ app.Shape = function(){
 		this.radius = 5;
 		this.maxSpeed = s; //speed relative to numsides
 		this.maxForce = 0.1;
+		this.shatterSound = new Audio('sound/shatter.wav');
+		this.shatterSound.volume = 0.3;
+		this.shatterSound.loop = false;
 		this.mass = 2;
 		//color based on num sides
 		if(this.sides == 3){
@@ -155,6 +158,7 @@ app.Shape = function(){
 			app.shapeShatter.multiplier = 9;
 		}
 		this.remove = true;
+		this.shatterSound.play();
 	};
 	
 	return Shape;

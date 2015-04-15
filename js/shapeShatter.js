@@ -6,6 +6,10 @@ app.shapeShatter = {
 
 	WIDTH : 320, 
     HEIGHT: 480,
+	
+	//musica
+	song : undefined,
+	shatterSound : undefined,
 
 	RATIO : undefined,
 	currentWidth : undefined,
@@ -52,6 +56,16 @@ app.shapeShatter = {
 	init : function(){
 	
 		this.RATIO = this.WIDTH / this.HEIGHT;
+		
+		//musica
+		this.song = new Audio('sound/background.wav');
+		this.song.volume = 0.6;
+		this.song.loop = true;
+		this.song.play();
+		
+		this.shatterSound = new Audio('sound/shatter.wav');
+		this.shatterSound.volume = 0.3;
+		this.shatterSound.loop = false;
 		
 		this.currentWidth = this.WIDTH;
 		this.currentHeight = this.HEIGHT;
