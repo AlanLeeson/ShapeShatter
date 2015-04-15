@@ -31,6 +31,11 @@ app.shapeShatter = {
 	score : 0,
 	multiplier : 1,
 	
+	level : 0,
+	LEVEL_ONE : 0,
+	LEVEL_TWO : 1,
+	LEVEL_THREE : 2,
+	
 	GAME_STATE_TUTORIAL : 0,
 	GAME_STATE_MENU : 1,
 	GAME_STATE_PLAY : 2,
@@ -67,7 +72,7 @@ app.shapeShatter = {
 		this.android = this.ua.indexOf('android') > -1 ? true : false;
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
-		this.gameState = this.GAME_STATE_TUTORIAL;
+		this.gameState = this.GAME_STATE_MENU;
 		
 		//makes the menu button
 		this.menuButton = new app.InputButton("menu",this.WIDTH/2,400,40,"Menu",false,
@@ -82,6 +87,9 @@ app.shapeShatter = {
 		
 		//Tutorial
 		this.initTutorial();
+		
+		//Check Storage
+		this.initStorage();
 
 		this.resize();
 		this.gameLoop();
@@ -102,6 +110,10 @@ app.shapeShatter = {
     		for(var i = 0; i < this.menuElements.length; i++){
     			this.menuElements[i].render(this.ctx);
     		}
+    		//ctx,string,x,y,size,col
+    		app.draw.text(this.ctx,localStorage.highScoreLevel1,this.WIDTH/4-50,320,20,"white");
+    		app.draw.text(this.ctx,localStorage.highScoreLevel2,this.WIDTH/2-30,320,20,"white");
+    		app.draw.text(this.ctx,localStorage.highScoreLevel3,this.WIDTH*3/4-10,320,20,"white");
     	}else if(this.gameState === this.GAME_STATE_PLAY){
 			app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
 			this.drawHud();
@@ -238,6 +250,7 @@ app.shapeShatter = {
     },
     
     returnToMenu : function(){
+    	this.checkScores();
     	this.gameState = this.GAME_STATE_MENU;
     	this.pauseScene();
     	this.entities = [];
@@ -253,8 +266,46 @@ app.shapeShatter = {
 		
     },
     
+    checkScores : function(){
+    	switch(this.level){
+    		case this.LEVEL_ONE:
+    			if(localStorage.getItem("highScoreLevel1") < this.score){
+    				localStorage.highScoreLevel1 = this.score;
+    			}
+    			break;
+    		case this.LEVEL_TWO:
+    			if(localStorage.getItem("highScoreLevel2") < this.score){
+    				localStorage.highScoreLevel2 = this.score;
+    			}
+    			break;
+    		case this.LEVEL_THREE:
+    			if(localStorage.getItem("highScoreLevel3") < this.score){
+    				localStorage.highScoreLevel3 = this.score;
+    			}
+    			break;
+    	}
+    },
+    
     drawHud : function(){
     	app.draw.text(this.ctx,this.score + "pts",this.WIDTH/2-30,this.HEIGHT-10,30,"#fff");
+    },
+    
+    initStorage : function(){
+    	if(localStorage.highScoreLevel1){
+			this.highScoreLevel1 = localStorage.highScoreLevel1;
+		}else{
+			localStorage.setItem("highScoreLevel1",0);
+		}
+		if(localStorage.highScoreLevel2){
+			this.highScoreLevel2 = localStorage.highScoreLevel2;
+		}else{
+			localStorage.setItem("highScoreLevel2",0);
+		}
+		if(localStorage.highScoreLevel3){
+			this.highScoreLevel3 = localStorage.highScoreLevel3;
+		}else{
+			localStorage.setItem("highScoreLevel3",0);
+		}
     },
     
     initTutorial : function(){
@@ -275,12 +326,12 @@ app.shapeShatter = {
 				app.shapeShatter.pause = true;}));
 		//levels
 		this.menuElements.push(new app.InputButton("level",this.WIDTH/4-20,300,40,"Level1",false,
-			function(){app.Level.level2();}));
+			function(){app.Level.level1(); app.shapeShatter.level = app.shapeShatter.LEVEL_ONE;}));
 		//classic level
 		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,40,"Level2",true,
-			function(){app.Level.level1();}));
+			function(){app.Level.level2(); app.shapeShatter.level = app.shapeShatter.LEVEL_TWO;}));
 		this.menuElements.push(new app.InputButton("level",this.WIDTH*3/4+20,300,40,"Level3",false,
-			function(){app.Level.level3();}));
+			function(){app.Level.level3(); app.shapeShatter.level = app.shapeShatter.LEVEL_THREE;}));
 		//modes
 		this.menuElements.push(new app.InputButton("mode",this.WIDTH/2,400,40,"Infinite",true,
 			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_INFINITE;}));
