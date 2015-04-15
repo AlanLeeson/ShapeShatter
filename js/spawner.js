@@ -42,21 +42,27 @@ app.Spawner = function(){
 	};
 	
 	p.render = function(ctx){
-		ctx.globalAlpha = this.opacity;
+		//ctx.globalAlpha = this.opacity;
 		app.draw.circle(ctx,this.x,this.y,this.radius,this.color);
-		ctx.globalAlpha = 1.0;
+		//ctx.globalAlpha = 1.0;
 	};
 	
 	p.spawnShape =function(){
 		if(app.shapeShatter.score < 50){
-			this.shape = new app.Shape(this.x, this.y, 3);
-			app.shapeShatter.entities.push(this.shape);
+			if(parseInt((Math.random()*4) + 1) == 3 ){
+				this.shape = new app.Shape(this.x, this.y, 3);
+				app.shapeShatter.entities.push(this.shape);
+			}
 		} else if(app.shapeShatter.score < 200){ //spawn squares
-			this.shape = new app.Shape(this.x,this.y,parseInt(Math.random()*2 + 3));
-			app.shapeShatter.entities.push(this.shape);
+			if(parseInt((Math.random()*3) + 1) == 2 ){
+				this.shape = new app.Shape(this.x,this.y,parseInt(Math.random()*2 + 3));
+				app.shapeShatter.entities.push(this.shape);
+			}
 		} else if(app.shapeShatter.score < 500){ //begin spawn 5 sided
-			this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
-			app.shapeShatter.entities.push(this.shape);
+			if(parseInt((Math.random()*2) + 1) == 1 ){
+				this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
+				app.shapeShatter.entities.push(this.shape);
+			}
 		} else {
 			this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
 			app.shapeShatter.entities.push(this.shape);
