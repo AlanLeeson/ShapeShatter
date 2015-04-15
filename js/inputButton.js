@@ -4,11 +4,14 @@ var app = app || {};
 
 app.InputButton = function(){
 
-	var InputButton = function(type,x,y,s,string,defaul,action){
+	var InputButton = function(type,x,y,w,h,s,url,defaul,action){
 		this.type = type;
 		this.x = x;
 		this.y = y;
-		this.text = string;
+		this.w = w;
+		this.h = h;
+		this.image = new Image(this.w,this.h);
+		this.image.src = url;
 		this.action = action;
 		this.radius = s;
 		this.textSize = s;
@@ -23,11 +26,12 @@ app.InputButton = function(){
 	
 	p.render = function(ctx){
 		if(this.selected){
-			app.draw.circle(ctx,this.x,this.y,this.radius + 5,"rgba(255,255,255,0.9)");
-			app.draw.circle(ctx,this.x,this.y,this.radius + 10,"rgba(255,20,50,0.5)");
+			app.draw.circle(ctx,this.x+this.w/2,this.y+this.h/2,this.radius + 5,"rgba(255,255,255,0.9)");
+		//	app.draw.circle(ctx,this.x,this.y,this.radius + 10,"rgba(255,20,50,0.5)");
 		}
-		app.draw.circle(ctx,this.x,this.y,this.radius,"#000");
-		app.draw.text(ctx,this.text,this.x-this.textSize*3/4,this.y,this.textSize/2,"#fff");
+		//app.draw.circle(ctx,this.x,this.y,this.radius,"#000");
+		ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+		//app.draw.text(ctx,this.text,this.x-this.textSize*3/4,this.y,this.textSize/2,"#fff");
 	};
 	
 	p.update = function(){
@@ -50,8 +54,8 @@ app.InputButton = function(){
 	};
 	
 	p.checkTapped = function(){
-    	var dx = app.shapeShatter.xTap - this.x;
-    	var dy = app.shapeShatter.yTap - this.y;
+    	var dx = app.shapeShatter.xTap - this.x - this.w/2;
+    	var dy = app.shapeShatter.yTap - this.y - this.h/2;
     	return dx * dx + dy * dy <= this.radius * this.radius;
     };
 	

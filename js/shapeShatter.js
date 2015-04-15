@@ -89,11 +89,11 @@ app.shapeShatter = {
 		this.gameState = this.GAME_STATE_TUTORIAL;
 		
 		//makes the menu button
-		this.menuButton = new app.InputButton("menu",this.WIDTH/2,400,40,"Menu",false,
+		this.menuButton = new app.InputButton("menu",2,2,80,80,40,"images/Menu.png",false,
 			function(){app.shapeShatter.returnToMenu();});
 		
 		//Makes the tutorial step-through button
-		this.tutorialButton = new app.InputButton("tutorial",this.WIDTH-35,this.HEIGHT-35,30,"Next",false,
+		this.tutorialButton = new app.InputButton("tutorial",this.WIDTH-65,this.HEIGHT-65,60,60,30,"images/Next.png",false,
 			function(){app.shapeShatter.tutorialIndex ++;});
 		
 		//Menu
@@ -125,9 +125,9 @@ app.shapeShatter = {
     			this.menuElements[i].render(this.ctx);
     		}
     		//ctx,string,x,y,size,col
-    		app.draw.text(this.ctx,localStorage.highScoreLevel1,this.WIDTH/4-50,320,20,"white");
-    		app.draw.text(this.ctx,localStorage.highScoreLevel2,this.WIDTH/2-30,320,20,"white");
-    		app.draw.text(this.ctx,localStorage.highScoreLevel3,this.WIDTH*3/4-10,320,20,"white");
+    		app.draw.text(this.ctx,localStorage.highScoreLevel1,this.WIDTH/4-50,230,20,"white");
+    		app.draw.text(this.ctx,localStorage.highScoreLevel2,this.WIDTH/2-30,160,20,"white");
+    		app.draw.text(this.ctx,localStorage.highScoreLevel3,this.WIDTH*3/4-10,230,20,"white");
     	}else if(this.gameState === this.GAME_STATE_PLAY){
 			app.draw.clear(this.ctx,0,0,this.WIDTH,this.HEIGHT);
 			this.drawHud();
@@ -226,7 +226,7 @@ app.shapeShatter = {
     setInput : function(data){
     	this.xTap = (data.pageX - this.offset.left)/this.scale;
     	this.yTap = (data.pageY - this.offset.top)/this.scale;
-    	if(this.tapped){
+    	if(this.tapped && this.gameState === this.GAME_STATE_PLAY){
     		this.checkAnchorTapped(this.anchor1);
     		this.checkAnchorTapped(this.anchor2);
     	}
@@ -335,23 +335,23 @@ app.shapeShatter = {
 		this.BackgroundImage.src = "images/Background.png";
 		
 		//Play Button
-		this.menuElements.push(new app.InputButton("play",this.WIDTH/2,100,20,"Play",false,
+		this.menuElements.push(new app.InputButton("play",this.WIDTH/2-62,250,124,124,70,"images/Play.png",false,
 			function(){app.shapeShatter.gameState = app.shapeShatter.GAME_STATE_PLAY;
 				app.shapeShatter.pause = true;}));
 		//levels
-		this.menuElements.push(new app.InputButton("level",this.WIDTH/4-20,300,40,"Level1",false,
+		this.menuElements.push(new app.InputButton("level",10,150,100,100,60,"images/Stage1.png",false,
 			function(){app.Level.level1(); app.shapeShatter.level = app.shapeShatter.LEVEL_ONE;}));
 		//classic level
-		this.menuElements.push(new app.InputButton("level",this.WIDTH/2,300,40,"Level2",true,
+		this.menuElements.push(new app.InputButton("level",this.WIDTH/2-50,80,100,100,60,"images/Stage2.png",true,
 			function(){app.Level.level2(); app.shapeShatter.level = app.shapeShatter.LEVEL_TWO;}));
-		this.menuElements.push(new app.InputButton("level",this.WIDTH*3/4+20,300,40,"Level3",false,
+			
+		this.menuElements.push(new app.InputButton("level",this.WIDTH-110,150,100,100,60,"images/Stage3.png",false,
 			function(){app.Level.level3(); app.shapeShatter.level = app.shapeShatter.LEVEL_THREE;}));
+			
 		//modes
-		this.menuElements.push(new app.InputButton("mode",this.WIDTH/2,400,40,"Infinite",true,
+		this.menuElements.push(new app.InputButton("mode",30,380,80,80,40,"images/Infinite.png",true,
 			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_INFINITE;}));
-		this.menuElements.push(new app.InputButton("mode",this.WIDTH/4-20,400,40,"Practice",false,
-			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_PRACTICE;}));
-		this.menuElements.push(new app.InputButton("mode",this.WIDTH*3/4+20,400,40,"Hardcore",false,
+		this.menuElements.push(new app.InputButton("mode",this.WIDTH-110,380,80,80,40,"images/Classic.png",false,
 			function(){app.shapeShatter.gameMode = app.shapeShatter.MODE_HARDCORE;}));
     },
 
