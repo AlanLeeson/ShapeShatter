@@ -36,6 +36,8 @@ app.Spawner = function(){
 					this.color = "rgb(255,255,0)";
 				} else if(this.shape.sides == 5){
 					this.color = "rgb(255,0,255)";
+				} else if(this.shape.sides == 6 ){
+					this.color = "rgb(255,165,0)";
 				} else if(this.shape.sides == 8){
 					this.color = "rgb(0,0,0)";
 				}
@@ -52,6 +54,20 @@ app.Spawner = function(){
 	
 	p.spawnShape =function(){
 		if(app.shapeShatter.score < 50){
+			//this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
+			//app.shapeShatter.entities.push(this.shape);
+			//if(parseInt(Math.random()*3 + 3) == 4){
+				//this.shape = new app.Shape(this.x, this.y, 8);
+				//app.shapeShatter.entities.push(this.shape);
+				//this.spawn.play();
+			//}
+			//if(parseInt(Math.random()*3 + 3) == 4){
+				//this.shape = new app.Shape(this.x, this.y, 6);
+				//app.shapeShatter.entities.push(this.shape);
+				//this.spawn.play();
+			//}
+		
+		
 			if(parseInt((Math.random()*4) + 1) == 3 ){
 				this.shape = new app.Shape(this.x, this.y, 3);
 				app.shapeShatter.entities.push(this.shape);
@@ -69,11 +85,30 @@ app.Spawner = function(){
 				app.shapeShatter.entities.push(this.shape);
 				this.spawn.play();
 			}
-		} else {
-			this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
-			app.shapeShatter.entities.push(this.shape);
+		} else if(app.shapeShatter.score < 1000) {
+			if(parseInt((Math.random()*2) + 1) == 1){
+				this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
+				app.shapeShatter.entities.push(this.shape);
+				this.spawn.play();
+			}
 			if(parseInt(Math.random()*3 + 3) == 4){
 				this.shape = new app.Shape(this.x, this.y, 8);
+				app.shapeShatter.entities.push(this.shape);
+				this.spawn.play();
+			}
+		} else {
+			if(parseInt((Math.random()*2) + 1) == 1){
+				this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
+				app.shapeShatter.entities.push(this.shape);
+				this.spawn.play();
+			}
+			if(parseInt(Math.random()*9 + 9) == 9){
+				this.shape = new app.Shape(this.x, this.y, 8);
+				app.shapeShatter.entities.push(this.shape);
+				this.spawn.play();
+			}
+			if(parseInt(Math.random()*12 + 12) == 12){
+				this.shape = new app.Shape(this.x, this.y, 6);
 				app.shapeShatter.entities.push(this.shape);
 				this.spawn.play();
 			}

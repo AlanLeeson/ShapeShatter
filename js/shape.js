@@ -6,6 +6,7 @@ app.Shape = function(){
 	
 	var Shape = function(x,y,s){
 		this.type = "shape";
+		this.shape = "something";
 		this.location = vec2.fromValues(x,y);
 		this.velocity = vec2.create();
 		this.acceleration = vec2.create();
@@ -31,7 +32,11 @@ app.Shape = function(){
 			this.col = "yellow";
 		} else if(this.sides == 5){
 			this.col = "purple";
-		} else if(this.sides > 5){
+		} else if(this.sides == 6){
+			this.col = "orange";
+			this.maxSpeed = 1;
+			this.radius = 10;
+		} else if(this.sides > 6){
 			this.col = "black";
 			this.radius = 9;
 		}
@@ -71,6 +76,16 @@ app.Shape = function(){
 		}
 		for(var i = 0; i < app.shapeShatter.ropes.length; i++){
 			this.findDistance(app.shapeShatter.ropes[i]);
+		}
+		if(this.sides == 6){
+			if(parseInt(Math.random()*33 + 33) == 33){
+				this.shape = new app.Shape(this.location[0], this.location[1], 3);
+				this.shape2 = new app.Shape(this.location[0], this.location[1], 3);
+				this.shape3 = new app.Shape(this.location[0], this.location[1], 3);
+				app.shapeShatter.entities.push(this.shape);
+				app.shapeShatter.entities.push(this.shape2);
+				app.shapeShatter.entities.push(this.shape3);
+			}
 		}
 	};
 	
