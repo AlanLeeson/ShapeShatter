@@ -11,7 +11,6 @@ app.draw = {
 	rect: function(ctx,x,y,w,h,col){
 		ctx.fillStyle = col;
 		ctx.fillRect(x,y,w,h);
-		console.log(ctx.fillStyle);
 	},
 	
 	circle: function(ctx,x,y,r,col){

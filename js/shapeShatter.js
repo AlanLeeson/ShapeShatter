@@ -86,7 +86,7 @@ app.shapeShatter = {
 		this.android = this.ua.indexOf('android') > -1 ? true : false;
 		this.ios = ( this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1 ) ? true : false;
 		
-		this.gameState = this.GAME_STATE_TUTORIAL;
+		this.gameState = this.GAME_STATE_MENU;
 		
 		//makes the menu button
 		this.menuButton = new app.InputButton("menu",2,2,80,80,40,"images/Menu.png",false,
@@ -168,7 +168,7 @@ app.shapeShatter = {
     		if(this.anchor1.clicked){
 				this.anchor1.location = vec2.fromValues(this.xTap,this.yTap);
 				for(var i = 0; i < this.entities.length; i++){
-					if(this.entities[i].type === "shape"){
+					if(this.entities[i].type === "shape" || this.entities[i].type === "powerUp"){
 						this.entities[i].update(this.anchor1,this.anchor2);
 					}else{
 						this.entities[i].update();
@@ -181,7 +181,7 @@ app.shapeShatter = {
 			}else if(this.anchor2.clicked){
 				this.anchor2.location = vec2.fromValues(this.xTap,this.yTap);
 				for(var i = 0; i < this.entities.length; i++){
-					if(this.entities[i].type === "shape"){
+					if(this.entities[i].type === "shape" || this.entities[i].type === "powerUp"){
 						this.entities[i].update(this.anchor2,this.anchor1);
 					}else{
 						this.entities[i].update();

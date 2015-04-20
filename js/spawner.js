@@ -78,6 +78,9 @@ app.Spawner = function(){
 				this.spawn.play();
 			}
 		}
+		if(parseInt(Math.random()*20) == 0){
+			app.shapeShatter.entities.push(new app.PowerUp(Math.random()*200+30,Math.random()*300+30));
+		}
 		
 	};
 	
