@@ -251,12 +251,24 @@ app.shapeShatter = {
     
     doPauseScene : function(){
 		app.draw.rect(this.ctx,0,0,1000,1000,"rgba(0,0,0,0.3)");
-		app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.03)");
-		app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.03)");
-		app.draw.rect(this.ctx,0,0,this.WIDTH,20,"rgba(0,0,0,1)");
-		app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,"rgba(0,0,0,1)");
-		app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,"rgba(0,0,0,1)");
-		app.draw.rect(this.ctx,0,0,20,this.HEIGHT,"rgba(0,0,0,1)");
+		app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.09)");
+		app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.09)");
+		var grd = this.ctx.createLinearGradient(this.WIDTH-20,this.HEIGHT/2,this.WIDTH,this.HEIGHT/2);
+		grd.addColorStop(0,'rgba(119,119,119,0.4)');
+		grd.addColorStop(1,'rgba(0,0,0,0.4)');
+		var grd2 = this.ctx.createLinearGradient(this.WIDTH/2,20,this.WIDTH/2,0);
+		grd2.addColorStop(0,'rgba(119,119,119,0.4)');
+		grd2.addColorStop(1,'rgba(0,0,0,0.4)');
+		var grd3 = this.ctx.createLinearGradient(20,this.HEIGHT/2,0,this.HEIGHT/2);
+		grd3.addColorStop(0,'rgba(119,119,119,0.4)');
+		grd3.addColorStop(1,'rgba(0,0,0,0.4)');
+		var grd4 = this.ctx.createLinearGradient(this.WIDTH/2,this.HEIGHT-20,this.WIDTH/2,this.HEIGHT);
+		grd4.addColorStop(0,'rgba(119,119,119,0.4)');
+		grd4.addColorStop(1,'rgba(0,0,0,0.4)');
+		app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,grd);
+		app.draw.rect(this.ctx,0,0,this.WIDTH,20,grd2);
+		app.draw.rect(this.ctx,0,0,20,this.HEIGHT,grd3);
+		app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,grd4);
 		this.menuButton.render(this.ctx);
 		this.menuButton.update();
     },
@@ -268,6 +280,7 @@ app.shapeShatter = {
     	this.entities = [];
 		this.ropes = [];
 		this.score = 0;
+		this.multiplier = 1;
 		for(var i = 0; i < this.menuElements.length; i++){
 			if(this.menuElements[i].type !== "play" && this.menuElements[i].selected){
 				this.menuElements[i].action();
