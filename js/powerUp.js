@@ -8,18 +8,29 @@ app.PowerUp = function(){
 		this.type = "powerUp";
 		this.x = x;
 		this.y = y;
-		this.col = "#f0f";
+		this.col = "#fff";
 		this.radius = 5;
+		this.radiusMin = 5;
+		this.radiusMax = 8;
 		this.remove = false;
+		this.dir = 1;
+		this.pulse
 	};
 	
 	var p = PowerUp.prototype;
 	
 	p.render = function(ctx){
+		this.radius += 0.1 * this.dir; 
+		if(this.radius >= this.radiusMax){
+			this.dir = -1;
+		}else if(this.radius <= this.radiusMin){
+			this.dir = 1;
+		}
 		app.draw.circle(ctx,this.x,this.y,this.radius,this.col);
 	};
 	
 	p.update = function(selectedAnchor,enemyAnchor){
+	
 		if(this.checkAnchorCollision(enemyAnchor) || this.checkAnchorCollision(selectedAnchor)){
 			app.shapeShatter.entities.push(new app.ParticleSystem(this.x,this.y,this.sides,this.col));
 			app.shapeShatter.entities.push(new app.ScreenText(
