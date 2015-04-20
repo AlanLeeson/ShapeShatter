@@ -11,7 +11,7 @@ app.Spawner = function(){
 		this.y = y;
 		this.radius = 50;
 		this.opacity = 0.2;
-		this.color = "rgb(0,0,255);";
+		this.color = "rgb(0,0,255)";
 		this.remove = false;
 		this.spawnRate = Math.random()*100 + 50;
 		this.spawnCount = 0;
@@ -31,13 +31,13 @@ app.Spawner = function(){
 				this.opacity = this.opacityStart;
 				this.spawnShape();
 				if(this.shape.sides == 3){
-					this.color = "rgb(0,0,255);";
+					this.color = "rgb(0,0,255)";
 				} else if(this.shape.sides == 4){
 					this.color = "rgb(255,255,0)";
 				} else if(this.shape.sides == 5){
-					this.color = "rgb(255,0,255);";
+					this.color = "rgb(255,0,255)";
 				} else if(this.shape.sides == 8){
-					this.color = "rgb(0,0,0);";
+					this.color = "rgb(0,0,0)";
 				}
 				this.spawnCount = 0;
 			}
@@ -45,7 +45,6 @@ app.Spawner = function(){
 	};
 	
 	p.render = function(ctx){
-		//ctx.globalAlpha = this.opacity;
 		ctx.globalAlpha = this.opacityStart;
 		app.draw.circle(ctx,this.x,this.y,this.radius,this.color);
 		ctx.globalAlpha = 1.0;
@@ -73,7 +72,6 @@ app.Spawner = function(){
 		} else {
 			this.shape = new app.Shape(this.x, this.y, parseInt(Math.random()*3 + 3));
 			app.shapeShatter.entities.push(this.shape);
-			spawn.play();
 			if(parseInt(Math.random()*3 + 3) == 4){
 				this.shape = new app.Shape(this.x, this.y, 8);
 				app.shapeShatter.entities.push(this.shape);

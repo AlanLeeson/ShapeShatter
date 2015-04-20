@@ -157,10 +157,8 @@ app.shapeShatter = {
 			for(var i = 0; i < this.ropes.length; i ++){
 				this.ropes[i].update();
 			}
-		
 			this.anchor1.update();
 			this.anchor2.update();
-		
 			this.checkGameElements();
 		}
     },
@@ -252,13 +250,13 @@ app.shapeShatter = {
     },
     
     doPauseScene : function(){
-		app.draw.rect(this.ctx,0,0,1000,1000,"rgba(0,0,0,0.3);");
-		app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.3);");
-		app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.3);");
-		app.draw.rect(this.ctx,0,0,this.WIDTH,20,"rgba(0,0,0,1);");
-		app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,"rgba(0,0,0,1);");
-		app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,"rgba(0,0,0,1);");
-		app.draw.rect(this.ctx,0,0,20,this.HEIGHT,"rgba(0,0,0,1);");
+		app.draw.rect(this.ctx,0,0,1000,1000,"rgba(0,0,0,0.3)");
+		app.draw.circle(this.ctx, this.anchor1.location[0], this.anchor1.location[1], this.anchor1.radius*3, "rgba(255,255,255,0.03)");
+		app.draw.circle(this.ctx, this.anchor2.location[0], this.anchor2.location[1], this.anchor2.radius*3, "rgba(255,255,255,0.03)");
+		app.draw.rect(this.ctx,0,0,this.WIDTH,20,"rgba(0,0,0,1)");
+		app.draw.rect(this.ctx,this.WIDTH - 20,0,20,this.HEIGHT,"rgba(0,0,0,1)");
+		app.draw.rect(this.ctx,0,this.HEIGHT-20,this.WIDTH,20,"rgba(0,0,0,1)");
+		app.draw.rect(this.ctx,0,0,20,this.HEIGHT,"rgba(0,0,0,1)");
 		this.menuButton.render(this.ctx);
 		this.menuButton.update();
     },
